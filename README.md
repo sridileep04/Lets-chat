@@ -1,1 +1,6 @@
 # Lets-chat
+
+#Sampele .env file
+GROQ_API_KEY=gsk_....
+DEBUG=false
+TAVILY_API_KEY=tvly-dev-....

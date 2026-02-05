@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-neutral-900 overflow-x-hidden text-orange-500">
+    <div class="container mx-auto max-w-3xl pb-44 px-2" id="chat-container">
+        <h1>Hello orange</h1>
+        <!--messages-->
+
+        <!--user message-->
+        
+
+        <!--bot message-->
+        <div class="max-w-fit ">
+            This is Assistant messaging you
+        </div>
+
+        <!--Bottom area-->
+        <div class="bg-neutral-800 p-2 rounded-3xl fixed bottom-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-3xl">
+            <textarea class="text-white resize-none outline-0 w-full p-3" rows="2" placeholder="Type your message..." id="input"></textarea>
+            <div class="flex justify-end items-center">
+                <button class="bg-green-300 px-3 py-1 rounded-full text-black cursor-pointer hover:bg-green-400" id="ask">Ask me</button>
+            </div>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
