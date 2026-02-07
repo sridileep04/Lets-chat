@@ -1,13 +1,15 @@
-import readline from "node:readline/promises";
 import 'dotenv/config';
 import Groq from "groq-sdk";
 import { tavily } from "@tavily/core";
+import NodeCache from 'node-cache';
+
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const tvly = new tavily({ apiKey: process.env.TAVILY_API_KEY });
+const cache = new NodeCache({ stdTTL: 60 * 60 * 12 }); // Cache results for 24 hours
 
-export async function generate(userMessage) {
-    const messages = [
+export async function generate(userMessage, threadId) {
+    const baseMessages = [
         {
             role: "system",
             content: `You are a personal assistant.
@@ -50,11 +52,19 @@ export async function generate(userMessage) {
         }
     ];
 
+    const messages = cache.get(threadId) ?? baseMessages;
+
     messages.push({
         role: 'user',
         content: userMessage,
     });
+    const MaxRetries = 7;
+    let count = 0;
     while (true) {
+        if (count > MaxRetries) {
+            return "Sorry, I'm having trouble retrieving the information right now. Please try again later.";
+        }
+        count++;
         // FIRST CALL: AI decides to use tool
         const completions = await groq.chat.completions.create({
             model: "llama-3.3-70b-versatile",
@@ -69,6 +79,8 @@ export async function generate(userMessage) {
 
         const toolCalls = assistantMessage.tool_calls;
         if (!toolCalls) {
+            //This is the final answer we are returning to the user
+            cache.set(threadId, messages);
             return assistantMessage.content;
         }
 
